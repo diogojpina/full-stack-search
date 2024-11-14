@@ -1,37 +1,22 @@
-import { getCodeSandboxHost } from "@codesandbox/utils";
 import { ChangeEvent, useState } from "react";
 import { Hotel } from "../../entities";
-
-const codeSandboxHost = getCodeSandboxHost(3001);
-const API_URL = codeSandboxHost
-  ? `https://${codeSandboxHost}`
-  : "http://localhost:3001";
-
-const fetchAndFilterHotels = async (value: string) => {
-  const hotelsData = await fetch(`${API_URL}/hotel`);
-  const hotels = (await hotelsData.json()) as Hotel[];
-  return hotels.filter(
-    ({ chain_name, hotel_name, city, country }) =>
-      chain_name.toLowerCase().includes(value.toLowerCase()) ||
-      hotel_name.toLowerCase().includes(value.toLowerCase()) ||
-      city.toLowerCase().includes(value.toLowerCase()) ||
-      country.toLowerCase().includes(value.toLowerCase())
-  );
-};
+import { HotelService } from "../../services";
 
 export default function SearchPage() {
   const [hotels, setHotels] = useState<Hotel[]>([]);
   const [showClearBtn, setShowClearBtn] = useState(false);
 
   const fetchData = async (event: ChangeEvent<HTMLInputElement>) => {
-    if (event.target.value === "") {
+    const search = event.target.value;
+    if (search === "") {
       setHotels([]);
       setShowClearBtn(false);
       return;
     }
 
-    const filteredHotels = await fetchAndFilterHotels(event.target.value);
-    setShowClearBtn(true);
+    const filteredHotels = await HotelService.search(search);
+    setHotels(filteredHotels);
+
     setHotels(filteredHotels);
   };
 
