@@ -1,10 +1,13 @@
 import { ChangeEvent, useState } from "react";
-import { Hotel } from "../../entities";
-import { HotelService } from "../../services";
+import { City, Country, Hotel } from "../../entities";
+import { CityService, CountryService, HotelService } from "../../services";
 import ListItem from "../../components/search/list.item";
 
 export default function SearchPage() {
   const [hotels, setHotels] = useState<Hotel[]>([]);
+  const [countries, setCountries] = useState<Country[]>([]);
+  const [cities, setCities] = useState<City[]>([]);
+
   const [showClearBtn, setShowClearBtn] = useState(false);
 
   const fetchData = async (event: ChangeEvent<HTMLInputElement>) => {
@@ -18,7 +21,13 @@ export default function SearchPage() {
     const filteredHotels = await HotelService.search(search);
     setHotels(filteredHotels);
 
-    setHotels(filteredHotels);
+    const filteredCountries = await CountryService.search(search);
+    setCountries(filteredCountries);
+
+    const filteredCities = await CityService.search(search);
+    setCities(filteredCities);
+
+    setShowClearBtn(true);
   };
 
   return (
@@ -39,25 +48,53 @@ export default function SearchPage() {
               </span>
             )}
           </div>
-          {!!hotels.length && (
+          {showClearBtn && (
             <div className="search-dropdown-menu dropdown-menu w-100 show p-2">
-              <h2>Hotels</h2>
-              {hotels.length ? (
-                hotels.map((hotel, index) => (
-                  <ListItem
-                    key={index}
-                    name={hotel.hotel_name}
-                    to={`/hotel/${hotel._id}`}
-                    icon="fa fa-building mr-2"
-                  />
-                ))
-              ) : (
-                <p>No hotels matched</p>
-              )}
-              <h2>Countries</h2>
-              <p>No countries matched</p>
-              <h2>Cities</h2>
-              <p>No cities matched</p>
+              <>
+                <h2>Hotels</h2>
+                {hotels.length ? (
+                  hotels.map((hotel, index) => (
+                    <ListItem
+                      key={index}
+                      name={hotel.hotel_name}
+                      to={`/hotel/${hotel._id}`}
+                      icon="fa fa-building mr-2"
+                    />
+                  ))
+                ) : (
+                  <p>No hotels matched</p>
+                )}
+              </>
+              <>
+                <h2>Countries</h2>
+                {countries.length ? (
+                  countries.map((country, index) => (
+                    <ListItem
+                      key={index}
+                      name={country.country}
+                      to={`/country/${country._id}`}
+                      icon="fa fa-globe mr-2"
+                    />
+                  ))
+                ) : (
+                  <p>No countries matched</p>
+                )}
+              </>
+              <>
+                <h2>Cities</h2>
+                {cities.length ? (
+                  cities.map((city, index) => (
+                    <ListItem
+                      key={index}
+                      name={city.city}
+                      to={`/city/${city._id}`}
+                      icon="fa fa-map-marker mr-2"
+                    />
+                  ))
+                ) : (
+                  <p>No cities matched</p>
+                )}
+              </>
             </div>
           )}
         </div>
