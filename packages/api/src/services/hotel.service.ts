@@ -1,3 +1,4 @@
+import { ObjectId } from "mongodb";
 import { BaseService } from "./base.service";
 import { Hotel } from "src/entities";
 
@@ -14,5 +15,16 @@ export class HotelService extends BaseService {
       ];
     }
     return await collection.find<Hotel>(filters).toArray();
+  }
+
+  public async get(id: string): Promise<Hotel> {
+    const collection = this.db.collection("hotels");
+    const hotel = await collection.findOne<Hotel>({
+      _id: new ObjectId(id),
+    });
+    if (hotel === null) {
+      throw "Hotel not found!";
+    }
+    return hotel;
   }
 }

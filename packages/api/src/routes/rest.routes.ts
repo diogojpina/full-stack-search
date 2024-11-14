@@ -8,5 +8,6 @@ export class RestRoutes {
 
     const hotelController = new HotelController(context);
     app.get("/hotel", async (req, res) => hotelController.search(req, res));
+    app.get("/hotel/:id", (req, res) => hotelController.get(req, res));
   }
 }
