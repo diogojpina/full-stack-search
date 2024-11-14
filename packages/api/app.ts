@@ -1,19 +1,19 @@
 import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
-import { MongoClient } from "mongodb";
+import { Db, MongoClient } from "mongodb";
 import { RestRoutes } from "src/routes/rest.routes";
 
 dotenv.config();
 
 export class App {
   public express: express.Application;
+  public db: Db | undefined;
 
   public constructor() {
     this.express = express();
     this.middlewares();
     this.database();
-    this.routes();
   }
 
   private middlewares(): void {
@@ -28,13 +28,16 @@ export class App {
     try {
       mongoClient.connect();
       console.log("Successfully connected to MongoDB!");
+
+      this.db = mongoClient.db();
+      this.routes(this.db);
     } catch (e) {
       throw new Error("Failed to connect to MongoDB!");
     }
   }
 
-  private routes(): void {
-    RestRoutes.map(this.express);
+  private routes(db: Db): void {
+    RestRoutes.map(this.express, db);
   }
 }
 
