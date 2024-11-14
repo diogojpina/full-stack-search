@@ -84,3 +84,41 @@ body {
   max-height: 450px;
   overflow: scroll;
 }
+
+.content {
+  padding: 1rem;
+  background-color: #ffffff;
+  border-radius: 0.75rem;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 0.25rem;
+}
+
+.content .links {
+  text-align: right;
+}
+
+.content .links a {  
+  padding: 0.5rem;
+  border-radius: 0.75rem;
+  background-color: #2A0D5D;
+  color: #FFFFFF;
+  text-decoration: none;
+  transition: 0.3s ease-in-out;
+}
+
+.content .links a:hover {
+  opacity: 0.8;
+}
+
+.content span {
+  color: #000033;
+  font-size: 1.25rem;
+  transition: 0.3s ease-in-out;
+}
+
+.content span:hover {
+  opacity: 0.9;
+}
