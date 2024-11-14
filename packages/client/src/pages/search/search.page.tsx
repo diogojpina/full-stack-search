@@ -8,10 +8,13 @@ export default function SearchPage() {
   const [countries, setCountries] = useState<Country[]>([]);
   const [cities, setCities] = useState<City[]>([]);
 
+  const [search, setSearch] = useState("");
   const [showClearBtn, setShowClearBtn] = useState(false);
 
   const fetchData = async (event: ChangeEvent<HTMLInputElement>) => {
     const search = event.target.value;
+    setSearch(search);
+
     if (search === "") {
       setHotels([]);
       setShowClearBtn(false);
@@ -30,6 +33,15 @@ export default function SearchPage() {
     setShowClearBtn(true);
   };
 
+  const clear = () => {
+    setSearch("");
+    setShowClearBtn(false);
+
+    setHotels([]);
+    setCountries([]);
+    setCities([]);
+  };
+
   return (
     <div className="row height d-flex justify-content-center align-items-center">
       <div className="col-md-6">
@@ -40,10 +52,11 @@ export default function SearchPage() {
               type="text"
               className="form-control form-input"
               placeholder="Search accommodation..."
+              value={search}
               onChange={fetchData}
             />
             {showClearBtn && (
-              <span className="left-pan">
+              <span className="left-pan" onClick={clear}>
                 <i className="fa fa-close"></i>
               </span>
             )}
