@@ -1,6 +1,7 @@
 import { ChangeEvent, useState } from "react";
 import { Hotel } from "../../entities";
 import { HotelService } from "../../services";
+import ListItem from "../../components/search/list.item";
 
 export default function SearchPage() {
   const [hotels, setHotels] = useState<Hotel[]>([]);
@@ -43,13 +44,12 @@ export default function SearchPage() {
               <h2>Hotels</h2>
               {hotels.length ? (
                 hotels.map((hotel, index) => (
-                  <li key={index}>
-                    <a href={`/hotel/${hotel._id}`} className="dropdown-item">
-                      <i className="fa fa-building mr-2"></i>
-                      {hotel.hotel_name}
-                    </a>
-                    <hr className="divider" />
-                  </li>
+                  <ListItem
+                    key={index}
+                    name={hotel.hotel_name}
+                    to={`/hotel/${hotel._id}`}
+                    icon="fa fa-building mr-2"
+                  />
                 ))
               ) : (
                 <p>No hotels matched</p>
