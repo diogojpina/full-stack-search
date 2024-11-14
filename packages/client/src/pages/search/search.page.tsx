@@ -2,6 +2,7 @@ import { ChangeEvent, useState } from "react";
 import { City, Country, Hotel } from "../../entities";
 import { CityService, CountryService, HotelService } from "../../services";
 import ListItem from "../../components/search/list.item";
+import useDebounce from "../../utils/debounce";
 
 export default function SearchPage() {
   const [hotels, setHotels] = useState<Hotel[]>([]);
@@ -11,10 +12,17 @@ export default function SearchPage() {
   const [search, setSearch] = useState("");
   const [showClearBtn, setShowClearBtn] = useState(false);
 
-  const fetchData = async (event: ChangeEvent<HTMLInputElement>) => {
+  const debounceSearch = useDebounce((search: string) => {
+    fetchData(search);
+  }, 400);
+
+  const changeSearch = async (event: ChangeEvent<HTMLInputElement>) => {
     const search = event.target.value;
     setSearch(search);
+    debounceSearch(search);
+  };
 
+  const fetchData = async (search: string) => {
     if (search === "") {
       setHotels([]);
       setShowClearBtn(false);
@@ -53,7 +61,7 @@ export default function SearchPage() {
               className="form-control form-input"
               placeholder="Search accommodation..."
               value={search}
-              onChange={fetchData}
+              onChange={changeSearch}
             />
             {showClearBtn && (
               <span className="left-pan" onClick={clear}>
