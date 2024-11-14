@@ -17,7 +17,7 @@ export default function HotelPage() {
   const load = (id: string) => {
     HotelService.get(id)
       .then((hotel) => setHotel(hotel))
-      .catch((e) => console.log(e));
+      .catch((e) => alert(e));
   };
   return (
     <div className="row height d-flex justify-content-center align-items-center">

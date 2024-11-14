@@ -14,6 +14,7 @@ export class CountryController extends BaseController {
       const country = await this.context.Services.countryService.get(id);
       return res.json(country);
     } catch (error) {
+      console.log(error);
       return res.status(400).json({ error });
     }
   }

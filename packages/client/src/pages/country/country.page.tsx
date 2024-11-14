@@ -17,7 +17,7 @@ export default function CountryPage() {
   const load = (id: string) => {
     CountryService.get(id)
       .then((country) => setCountry(country))
-      .catch((e) => console.log(e));
+      .catch((e) => alert(e));
   };
   return (
     <div className="row height d-flex justify-content-center align-items-center">

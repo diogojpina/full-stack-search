@@ -17,7 +17,7 @@ export default function CityPage() {
   const load = (id: string) => {
     CityService.get(id)
       .then((city) => setCity(city))
-      .catch((e) => console.log(e));
+      .catch((e) => alert(e));
   };
   return (
     <div className="row height d-flex justify-content-center align-items-center">
